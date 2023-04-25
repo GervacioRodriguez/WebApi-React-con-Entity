@@ -10,6 +10,7 @@ namespace tecnica.Data
 {
     public class Estudiantecs
     {
+
         //agreagamos la clase que guardara los datos de los sp
         public static bool Registrar(Estudiante Oestudiante)
         {
