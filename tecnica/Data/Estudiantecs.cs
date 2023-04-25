@@ -137,6 +137,24 @@ namespace tecnica.Data
         }
     }
 
-
+    public static bool Eliminar(int id)
+    {
+        using (SqlConnection Oconexion = new SqlConnection(Conexion.rutaConexion))
+        {
+            SqlCommand cmd = new SqlCommand("sp_eliminar", Oconexion);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@id", id);
+            try
+            {
+                Oconexion.Open();
+                cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+        }
+    }
 
 }
