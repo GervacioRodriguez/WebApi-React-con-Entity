@@ -37,8 +37,9 @@ namespace tecnica.Controllers
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public bool Delete(int id)
         {
+            return Estudiantecs.
         }
     }
 }

@@ -62,41 +62,41 @@ namespace tecnica.Data
                 }
             }
         }
-    public static List<Estudiante> Listar()
-    {
-        List<Estudiante> OListar = new List<Estudiante>();
-        using (SqlConnection Oconexion = new SqlConnection(Conexion.rutaConexion))
+        public static List<Estudiante> Listar()
         {
-            SqlCommand cmd = new SqlCommand("SP_listar_estudiante", Oconexion);
-            cmd.CommandType = CommandType.StoredProcedure;
-            try
+            List<Estudiante> OListar = new List<Estudiante>();
+            using (SqlConnection Oconexion = new SqlConnection(Conexion.rutaConexion))
             {
-                Oconexion.Open();
-                cmd.ExecuteNonQuery();
-                using (SqlDataReader dr = cmd.ExecuteReader())
+                SqlCommand cmd = new SqlCommand("SP_listar_estudiante", Oconexion);
+                cmd.CommandType = CommandType.StoredProcedure;
+                try
                 {
-                    while (dr.Read())
+                    Oconexion.Open();
+                    cmd.ExecuteNonQuery();
+                    using (SqlDataReader dr = cmd.ExecuteReader())
                     {
-                        OListar.Add(new Estudiante()
+                        while (dr.Read())
                         {
-                            Id = Convert.ToInt32(dr["id"]),
-                            ApellidoP = dr["apellidoP"].ToString(),
-                            ApellidoM = dr["apellidoM"].ToString(),
-                            Nombres = dr["nombres"].ToString(),
-                            Ciudad = dr["ciudad"].ToString(),
-                            Direccion = dr["direccion"].ToString()
-                        });
+                            OListar.Add(new Estudiante()
+                            {
+                                Id = Convert.ToInt32(dr["id"]),
+                                ApellidoP = dr["apellidoP"].ToString(),
+                                ApellidoM = dr["apellidoM"].ToString(),
+                                Nombres = dr["nombres"].ToString(),
+                                Ciudad = dr["ciudad"].ToString(),
+                                Direccion = dr["direccion"].ToString()
+                            });
+                        }
                     }
+                    return OListar;
                 }
-                return OListar;
-            }
 
-            catch (Exception e)
-            {
-                return OListar;
+                catch (Exception e)
+                {
+                    return OListar;
+                }
             }
         }
-    }
 
         public static List<Estudiante> Obtener(int id)
         {
@@ -150,11 +150,12 @@ namespace tecnica.Data
                 cmd.ExecuteNonQuery();
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return false;
             }
         }
     }
-
+  
+    }
 }
