@@ -15,13 +15,13 @@ namespace tecnica.Data
         {
             using (SqlConnection Oconexion = new SqlConnection(Conexion.rutaConexion))
             {
-                SqlCommand cmd = new SqlCommand("Sp_insert_estudiante",Oconexion);
+                SqlCommand cmd = new SqlCommand("Sp_insert_estudiante", Oconexion);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@ap",Oestudiante.ApellidoP);
+                cmd.Parameters.AddWithValue("@ap", Oestudiante.ApellidoP);
                 cmd.Parameters.AddWithValue("@am", Oestudiante.ApellidoM);
                 cmd.Parameters.AddWithValue("@nombre", Oestudiante.Nombres);
-                cmd.Parameters.AddWithValue("@ciudad",Oestudiante.Ciudad);
-                cmd.Parameters.AddWithValue("@direccion",Oestudiante.Direccion);
+                cmd.Parameters.AddWithValue("@ciudad", Oestudiante.Ciudad);
+                cmd.Parameters.AddWithValue("@direccion", Oestudiante.Direccion);
 
                 try
                 {
@@ -43,7 +43,7 @@ namespace tecnica.Data
             {
                 SqlCommand cmd = new SqlCommand("SP_modificar_estudiante", Oconexion);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@id",Oestudiante.Id);
+                cmd.Parameters.AddWithValue("@id", Oestudiante.Id);
                 cmd.Parameters.AddWithValue("@ap", Oestudiante.ApellidoP);
                 cmd.Parameters.AddWithValue("@am", Oestudiante.ApellidoM);
                 cmd.Parameters.AddWithValue("@nombre", Oestudiante.Nombres);
@@ -65,41 +65,80 @@ namespace tecnica.Data
 
 
 
-
-        public static List<Estudiante> Listar()
+        public static List<Estudiante> Obtener()
         {
-            List<Estudiante> OListar = new List<Estudiante>();
+            List<Estudiante> Oobtener = new List<Estudiante>();
             using (SqlConnection Oconexion = new SqlConnection(Conexion.rutaConexion))
             {
-                SqlCommand cmd = new SqlCommand("SP_listar_estudiante", Oconexion);
+                SqlCommand cmd = new SqlCommand("SP_obtner_estudiante", Oconexion);
                 cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@id_esstudiante", Oconexion);
                 try
                 {
                     Oconexion.Open();
-                    cmd.ExecuteNonQuery();
+
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
                         while (dr.Read())
                         {
-                            OListar.Add(new Estudiante() { 
+                            Oobtener.Add(new Estudiante()
+                            {
+                                Id = Convert.ToInt32(dr["id"]),
+                                ApellidoP = dr["apellidoP"].ToString(),
+                                ApellidoM = dr["apellidoM"].ToString(),
+                                Nombres = dr["nombres"].ToString(),
+                                Ciudad = dr["ciudad"].ToString(),
+                                Direccion = dr["direccion"].ToString()
+                            });
+                        }
+                    }
+                    return Oobtener;
+                }
+
+                catch (Exception e)
+                {
+                    return Oobtener;
+                }
+
+            }
+        }
+    }
+
+
+    public static List<Estudiante> Listar()
+    {
+        List<Estudiante> OListar = new List<Estudiante>();
+        using (SqlConnection Oconexion = new SqlConnection(Conexion.rutaConexion))
+        {
+            SqlCommand cmd = new SqlCommand("SP_listar_estudiante", Oconexion);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                Oconexion.Open();
+                cmd.ExecuteNonQuery();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        OListar.Add(new Estudiante()
+                        {
                             Id = Convert.ToInt32(dr["id"]),
                             ApellidoP = dr["apellidoP"].ToString(),
                             ApellidoM = dr["apellidoM"].ToString(),
                             Nombres = dr["nombres"].ToString(),
                             Ciudad = dr["ciudad"].ToString(),
                             Direccion = dr["direccion"].ToString()
-                            });
-                        }
+                        });
                     }
-                    return OListar;
                 }
-
-                catch(Exception e)
-                {
-                    return OListar;
-                }
-
+                return OListar;
             }
+
+            catch (Exception e)
+            {
+                return OListar;
+            }
+
         }
     }
 }

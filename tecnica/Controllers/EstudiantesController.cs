@@ -18,9 +18,9 @@ namespace tecnica.Controllers
         }
 
         // GET api/<controller>/5
-        public string Get(int id)
+        public Estudiante Get(int id)
         {
-            return "value";
+            return Estudiantecs.Obtener();
         }
 
         // POST api/<controller>
