@@ -62,10 +62,43 @@ namespace tecnica.Data
                 }
             }
         }
+    public static List<Estudiante> Listar()
+    {
+        List<Estudiante> OListar = new List<Estudiante>();
+        using (SqlConnection Oconexion = new SqlConnection(Conexion.rutaConexion))
+        {
+            SqlCommand cmd = new SqlCommand("SP_listar_estudiante", Oconexion);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                Oconexion.Open();
+                cmd.ExecuteNonQuery();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        OListar.Add(new Estudiante()
+                        {
+                            Id = Convert.ToInt32(dr["id"]),
+                            ApellidoP = dr["apellidoP"].ToString(),
+                            ApellidoM = dr["apellidoM"].ToString(),
+                            Nombres = dr["nombres"].ToString(),
+                            Ciudad = dr["ciudad"].ToString(),
+                            Direccion = dr["direccion"].ToString()
+                        });
+                    }
+                }
+                return OListar;
+            }
 
+            catch (Exception e)
+            {
+                return OListar;
+            }
+        }
+    }
 
-
-        public static List<Estudiante> Obtener()
+        public static List<Estudiante> Obtener(int id)
         {
             List<Estudiante> Oobtener = new List<Estudiante>();
             using (SqlConnection Oconexion = new SqlConnection(Conexion.rutaConexion))
@@ -105,40 +138,5 @@ namespace tecnica.Data
     }
 
 
-    public static List<Estudiante> Listar()
-    {
-        List<Estudiante> OListar = new List<Estudiante>();
-        using (SqlConnection Oconexion = new SqlConnection(Conexion.rutaConexion))
-        {
-            SqlCommand cmd = new SqlCommand("SP_listar_estudiante", Oconexion);
-            cmd.CommandType = CommandType.StoredProcedure;
-            try
-            {
-                Oconexion.Open();
-                cmd.ExecuteNonQuery();
-                using (SqlDataReader dr = cmd.ExecuteReader())
-                {
-                    while (dr.Read())
-                    {
-                        OListar.Add(new Estudiante()
-                        {
-                            Id = Convert.ToInt32(dr["id"]),
-                            ApellidoP = dr["apellidoP"].ToString(),
-                            ApellidoM = dr["apellidoM"].ToString(),
-                            Nombres = dr["nombres"].ToString(),
-                            Ciudad = dr["ciudad"].ToString(),
-                            Direccion = dr["direccion"].ToString()
-                        });
-                    }
-                }
-                return OListar;
-            }
 
-            catch (Exception e)
-            {
-                return OListar;
-            }
-
-        }
-    }
 }

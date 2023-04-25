@@ -20,17 +20,20 @@ namespace tecnica.Controllers
         // GET api/<controller>/5
         public Estudiante Get(int id)
         {
-            return Estudiantecs.Obtener();
+            return Estudiantecs.Obtener(id);
         }
 
         // POST api/<controller>
-        public void Post([FromBody] string value)
+        public bool Post([FromBody] Estudiante Oestudiante)
         {
+            return Estudiantecs.Registrar(Oestudiante);
         }
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody] string value)
+        public bool Put([FromBody] Estudiante Oestudiante)
         {
+            return Estudiantecs.Modificar(Oestudiante);
+
         }
 
         // DELETE api/<controller>/5
